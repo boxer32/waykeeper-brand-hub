@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-mist-grey;
+  }
+  
+  body {
+    @apply bg-white text-deep-earth font-inter;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-skypath-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-skypath-blue border-2 border-skypath-blue px-6 py-3 rounded-lg font-semibold hover:bg-skypath-blue hover:text-white transition-all duration-200;
+  }
+  
+  .btn-text {
+    @apply text-skypath-blue font-semibold hover:underline;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-mist-grey p-6;
+  }
+  
+  .color-swatch {
+    @apply w-16 h-16 rounded-lg border-2 border-mist-grey cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-md;
+  }
+  
+  .copy-button {
+    @apply bg-mist-grey text-deep-earth px-3 py-1 rounded-md text-sm font-medium hover:bg-opacity-80 transition-all duration-200;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-skypath-blue to-earth-green bg-clip-text text-transparent;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
