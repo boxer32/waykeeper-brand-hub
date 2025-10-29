@@ -78,7 +78,7 @@ const designTypes = [
 export default function BrandComplianceChecker() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const [selectedDesignType, setSelectedDesignType] = useState('banner')
-  const [report, setReport] = useState<BrandImageReport | null>(null)
+  const [report, setReport] = useState<any | null>(null)
   const [isChecking, setIsChecking] = useState(false)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [imageMetadata, setImageMetadata] = useState<any>(null)
