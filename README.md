@@ -78,6 +78,9 @@ This is an internal corporate brand hub that provides easy access to all Waykeep
    
    # Assistant ID for Voice & Tone Playground
    ASSISTANT_ID=your_assistant_id_here
+   
+   # Vercel Blob Configuration
+   BLOB_READ_WRITE_TOKEN=your_vercel_blob_token_here
    ```
 
 3. **Run Development Server**
@@ -101,6 +104,7 @@ For production deployment, make sure to set these environment variables:
 
 - `OPENAI_API_KEY`: Your OpenAI API key for AI-powered features
 - `ASSISTANT_ID`: OpenAI Assistant ID for Voice & Tone Playground
+- `BLOB_READ_WRITE_TOKEN`: Vercel Blob token for image storage
 
 ## Project Structure
 

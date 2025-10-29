@@ -128,34 +128,41 @@ export default function VoiceTonePlayground() {
     setAnalysisResult(null) // Clear previous results
     
     try {
-      // Simulate API call with mock data
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      const mockResult = {
+      console.log('🚀 Sending request to API...', {
         scenario: selectedScenario,
         audience: selectedAudience,
-        language: "th",
-        reasoning: {
-          good: ["ข้อความมีความเป็นมิตร", "ใช้ภาษาที่เข้าใจง่าย", "สอดคล้องกับ brand voice"],
-          bad: ["อาจจะดูเป็นทางการเกินไป", "ขาดการเชื่อมโยงกับประสบการณ์"]
+        userText: customText.substring(0, 50) + '...'
+      });
+
+      const response = await fetch('/api/voice-tone', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        score: 85,
-        flags: {
-          corporateSpeak: false,
-          prohibitedWords: []
-        },
-        goodExample: `สวัสดี! ยินดีต้อนรับสู่การผจญภัยครั้งใหม่กับเรา 🌟 เราเชื่อว่าการเดินทางที่ดีที่สุดคือการได้พบเจอสิ่งใหม่ๆ และสร้างความทรงจำที่งดงาม มาสร้างเรื่องราวร่วมกันเถอะ!`,
-        badExample: `เรียนลูกค้าที่เคารพ เราได้รับคำขอของคุณแล้ว และจะดำเนินการตามขั้นตอนที่กำหนดไว้ในระบบ`,
-        nextStep: "ลองเพิ่มการเล่าเรื่องหรือใช้คำถามเพื่อสร้างการมีส่วนร่วม",
-        suggestions: [
-          "เพิ่มคำถามเพื่อสร้างการมีส่วนร่วม",
-          "ใช้คำที่แสดงถึงการตื่นเต้นและความสนใจ",
-          "เล่าเรื่องสั้นๆ ที่เกี่ยวข้องกับประสบการณ์"
-        ]
+        body: JSON.stringify({
+          scenario: selectedScenario,
+          audience: selectedAudience,
+          userText: customText,
+        }),
+      })
+
+      console.log('📡 Response status:', response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('❌ API Error:', errorData);
+        throw new Error(`API Error: ${errorData.error || 'Unknown error'}`)
       }
 
-      setAnalysisResult(mockResult)
-      showToast('การวิเคราะห์เสร็จสิ้น! (ข้อมูลตัวอย่าง)')
+      const data = await response.json()
+      console.log('✅ API Response:', { success: data.success, analysis: data.analysis });
+      
+      if (data.success && data.analysis) {
+        setAnalysisResult(data.analysis)
+        showToast('การวิเคราะห์เสร็จสิ้น!')
+      } else {
+        throw new Error('No response from AI')
+      }
     } catch (error) {
       console.error('❌ Error adjusting text:', error)
       showToast(`เกิดข้อผิดพลาด: ${error instanceof Error ? error.message : 'Unknown error'}`)
