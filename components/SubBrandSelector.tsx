@@ -157,7 +157,7 @@ export default function SubBrandSelector() {
             {selectedBrand !== 'master' && (
               <div className="bg-mist-grey/50 p-4 rounded-lg">
                 <p className="text-sm text-deep-earth/70">
-                  <strong>Revenue Model:</strong> {currentBrand.revenue}
+                  <strong>Revenue Model:</strong> {(currentBrand as any).revenue || 'N/A'}
                 </p>
               </div>
             )}
