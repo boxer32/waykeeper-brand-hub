@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
     let currentRun = run;
     while (!["completed", "failed", "cancelled", "expired"].includes(currentRun.status)) {
       await new Promise((resolve) => setTimeout(resolve, 200));
-      currentRun = await client.beta.threads.runs.retrieve(thread.id, { run_id: run.id });
+      currentRun = await client.beta.threads.runs.retrieve(thread.id, run.id as any);
     }
 
     if (currentRun.status !== "completed") {
