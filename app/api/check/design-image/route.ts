@@ -480,7 +480,7 @@ export async function POST(req: Request) {
         ? (draft.sections || []).reduce((acc, s) => acc + (s.score || 0) * ((weights as any)[s.key] || 0), 0) / totalWeight
         : 0;
 
-      draft.score = { overall: Math.round(overall), weights };
+      draft.score = { overall: Math.round(overall), weights: weights as any };
 
       // ปิดงาน
       return Response.json(draft, { status: 200 });
