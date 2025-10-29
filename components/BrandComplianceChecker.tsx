@@ -909,7 +909,7 @@ export default function BrandComplianceChecker() {
                           <span className="text-skypath-blue">🎨</span> แก้ไขภาพ/ดีไซน์
                         </h4>
                         <ul className="space-y-1">
-                          {report.suggestions.visualFix.map((fix, index) => (
+                          {report.suggestions.visualFix.map((fix: any, index: number) => (
                             <li key={index} className="text-sm text-deep-earth/70 flex items-start gap-2">
                               <span className="text-skypath-blue">•</span>
                               <span>{fix}</span>
@@ -926,7 +926,7 @@ export default function BrandComplianceChecker() {
                           <span className="text-morning-gold">📁</span> แก้ไขรูปแบบไฟล์
                         </h4>
                         <ul className="space-y-1">
-                          {report.suggestions.formatFix.map((fix, index) => (
+                          {report.suggestions.formatFix.map((fix: any, index: number) => (
                             <li key={index} className="text-sm text-deep-earth/70 flex items-start gap-2">
                               <span className="text-morning-gold">•</span>
                               <span>{fix}</span>
@@ -1235,7 +1235,7 @@ export default function BrandComplianceChecker() {
             🔍 นี่คือสิ่งที่เราเช็คในเครื่องตรวจสอบ เหมือนเป็นรายการตรวจสอบที่ครูใช้ตรวจการบ้าน
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {complianceChecks.map((category, index) => (
+            {complianceChecks.map((category: any, index: number) => (
               <div key={index} className="space-y-3">
                 <h4 className="font-semibold text-deep-earth">{category.category}</h4>
                 <p className="text-xs text-deep-earth/50 mb-2">
@@ -1247,7 +1247,7 @@ export default function BrandComplianceChecker() {
                   {category.category === 'File Quality' && '📁 ตรวจว่าคุณภาพไฟล์ดีหรือไม่'}
                 </p>
                 <ul className="space-y-1 text-sm text-deep-earth/70">
-                  {category.checks.map((check, checkIndex) => (
+                  {category.checks.map((check: any, checkIndex: number) => (
                     <li key={checkIndex} className="flex items-start gap-2">
                       <span className="text-earth-green">•</span>
                       <div>
