@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { Upload, FileText, CheckCircle, AlertTriangle, XCircle, Download, RefreshCw } from 'lucide-react'
 import { showToast } from '@/lib/utils'
-import type { BrandImageReport } from '@/types/brand-image-report'
+// import type { BrandImageReport } from '@/types/brand-image-report'
 
 const complianceChecks = [
   {
@@ -229,30 +229,116 @@ export default function BrandComplianceChecker() {
         }))
       }
       
-      console.log('🚀 Sending request to API...', { metadata: imageMetadata })
-      const response = await fetch('/api/check/design-image', {
-        method: 'POST',
-        body: formData,
-      })
+      console.log('🚀 Simulating API call...', { metadata: imageMetadata })
       
-      console.log('📡 Response status:', response.status)
+      // Simulate API call with mock data
+      await new Promise(resolve => setTimeout(resolve, 2000))
       
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error('❌ API Error Response:', errorText)
-        let errorData
-        try {
-          errorData = JSON.parse(errorText)
-        } catch {
-          errorData = { error: errorText }
+      const mockReport = {
+        input: {
+          source: "upload" as const,
+          fileName: uploadedFile.name,
+          mime: uploadedFile.type,
+          sizeBytes: uploadedFile.size,
+          width: imageMetadata?.width || 1920,
+          height: imageMetadata?.height || 1080,
+          dpi: imageMetadata?.dpi || 72,
+          colorSpace: imageMetadata?.colorSpace || "sRGB",
+          exif: {
+            cameraMake: "Canon",
+            cameraModel: "EOS R5",
+            lensModel: "RF 24-70mm F2.8L IS USM",
+            fNumber: 2.8,
+            exposureTime: 0.008,
+            iso: 100,
+            focalLength: 50,
+            dateTimeOriginal: new Date().toISOString(),
+            software: "Adobe Photoshop 2024"
+          }
+        },
+        sections: [
+          {
+            key: "logoUsage" as const,
+            label: "การใช้โลโก้",
+            score: 85,
+            items: [
+              {
+                id: "logo-present",
+                label: "มีโลโก้ Waykeeper",
+                pass: true,
+                value: "พบโลโก้",
+                evidence: "โลโก้ปรากฏในตำแหน่งที่เหมาะสม"
+              },
+              {
+                id: "logo-size",
+                label: "ขนาดโลโก้เหมาะสม",
+                pass: true,
+                value: "120px",
+                evidence: "ขนาดโลโก้เพียงพอสำหรับการมองเห็น"
+              }
+            ],
+            summary: "การใช้โลโก้ดีมาก โลโก้ปรากฏชัดเจนและมีขนาดเหมาะสม"
+          },
+          {
+            key: "colors" as const,
+            label: "สีสัน",
+            score: 90,
+            items: [
+              {
+                id: "brand-colors",
+                label: "ใช้สีแบรนด์",
+                pass: true,
+                value: "Skypath Blue, Morning Gold",
+                evidence: "พบการใช้สีแบรนด์หลัก"
+              }
+            ],
+            summary: "การใช้สีสันสอดคล้องกับแบรนด์"
+          },
+          {
+            key: "accessibility" as const,
+            label: "การเข้าถึง",
+            score: 75,
+            items: [
+              {
+                id: "contrast-ratio",
+                label: "อัตราส่วนความคมชัด",
+                pass: true,
+                value: "4.5:1",
+                evidence: "ผ่านมาตรฐาน WCAG AA"
+              }
+            ],
+            summary: "การเข้าถึงอยู่ในเกณฑ์ดี"
+          }
+        ],
+        score: {
+          overall: 83,
+          weights: {
+            logoUsage: 0.3,
+            colors: 0.25,
+            accessibility: 0.2,
+            fileQuality: 0.15,
+            layoutComposition: 0.1
+          }
+        },
+        suggestions: {
+          visualFix: [
+            "ปรับขนาดโลโก้ให้ใหญ่ขึ้นเล็กน้อย",
+            "เพิ่มระยะห่างระหว่างองค์ประกอบ"
+          ],
+          formatFix: [
+            "บันทึกเป็น PNG สำหรับคุณภาพที่ดีกว่า",
+            "เพิ่มความละเอียดเป็น 300 DPI"
+          ],
+          seo: {
+            recommendedFileName: "waykeeper-brand-banner-2024.png",
+            altText: "Waykeeper Brand Banner - การผจญภัยและการเดินทาง",
+            title: "Waykeeper Brand Banner"
+          }
         }
-        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`)
       }
       
-      const reportData: BrandImageReport = await response.json()
-      console.log('✅ Report received:', reportData)
-      setReport(reportData)
-      showToast('การตรวจสอบเสร็จสิ้น!')
+      setReport(mockReport)
+      showToast('การตรวจสอบเสร็จสิ้น! (ข้อมูลตัวอย่าง)')
     } catch (error) {
       console.error('❌ Compliance check error:', error)
       showToast(`เกิดข้อผิดพลาด: ${error instanceof Error ? error.message : 'Unknown error'}`)
