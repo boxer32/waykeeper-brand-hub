@@ -380,9 +380,9 @@ export default function BrandComplianceChecker() {
   // คำนวณคะแนนจาก report
   const overallScore = report?.score?.overall || 0
   const allItems = report?.sections?.flatMap((s: any) => s.items) || []
-  const passedCount = allItems.filter(item => item.pass === true).length
-  const failedCount = allItems.filter(item => item.pass === false).length
-  const warningCount = allItems.filter(item => item.pass === null).length
+  const passedCount = allItems.filter((item: any) => item.pass === true).length
+  const failedCount = allItems.filter((item: any) => item.pass === false).length
+  const warningCount = allItems.filter((item: any) => item.pass === null).length
 
   return (
     <section id="compliance" className="py-16 bg-gradient-to-br from-mist-grey to-white">
