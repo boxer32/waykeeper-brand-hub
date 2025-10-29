@@ -1,13 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: 'export', // Commented out to enable API routes
+  output: 'export', // Static export to avoid build issues
   trailingSlash: true,
   images: {
     unoptimized: true
-  },
-  experimental: {
-    // Disable build traces to avoid stack overflow
-    buildTrace: false
   }
 }
 
