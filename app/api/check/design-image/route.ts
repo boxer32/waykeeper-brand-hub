@@ -56,7 +56,7 @@ const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
         properties: {
           color1: { type: "string", description: "First hex color (e.g., #77BEF0)" },
           color2: { type: "string", description: "Second hex color (e.g., #FFFFFF)" }
-      },
+        },
         required: ["color1", "color2"]
       }
     }
@@ -70,7 +70,7 @@ const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
         type: "object",
         properties: {
           hex: { type: "string", description: "Hex color to match (e.g., #77BEF0)" }
-      },
+        },
         required: ["hex"]
       }
     }
@@ -119,7 +119,7 @@ const toolRouter = async (name: string, args: any) => {
         distance: Math.abs(parseInt(targetHex, 16) - parseInt(p.hex.replace('#', ''), 16))
       }));
       const nearest = brandColors.reduce((a, b) => a.distance < b.distance ? a : b);
-    return {
+      return { 
         nearest: nearest.name, 
         hex: nearest.hex,
         distance: nearest.distance
@@ -136,11 +136,16 @@ const toolRouter = async (name: string, args: any) => {
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('🚀 Starting design image check...');
+    
     const formData = await request.formData();
     const file = formData.get('file') as File;
     const metadata = formData.get('metadata') as string;
     
+    console.log('📁 File received:', { name: file?.name, size: file?.size, type: file?.type });
+    
     if (!file) {
+      console.error('❌ No file provided');
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
@@ -149,21 +154,34 @@ export async function POST(request: NextRequest) {
     if (metadata) {
       try {
         clientMetadata = JSON.parse(metadata);
+        console.log('📊 Client metadata:', clientMetadata);
       } catch (e) {
         console.warn('Failed to parse client metadata:', e);
       }
     }
 
     // Upload file to Vercel Blob
-    const blob = await put(file.name, file, {
-      access: 'public',
-      token: process.env.BLOB_READ_WRITE_TOKEN
-    });
-
-    console.log('📁 File uploaded to Vercel Blob:', blob.url);
+    let blob;
+    try {
+      console.log('📤 Uploading to Vercel Blob...');
+      blob = await put(file.name, file, {
+        access: 'public'
+      });
+      console.log('✅ File uploaded to Vercel Blob:', blob.url);
+    } catch (blobError) {
+      console.error('❌ Vercel Blob upload failed:', blobError);
+      throw new Error(`Failed to upload file: ${blobError instanceof Error ? blobError.message : 'Unknown error'}`);
+    }
 
     // Create OpenAI client
-    const client = getOpenAIClient();
+    let client;
+    try {
+      console.log('🤖 Initializing OpenAI client...');
+      client = getOpenAIClient();
+    } catch (openaiError) {
+      console.error('❌ OpenAI client initialization failed:', openaiError);
+      throw new Error(`OpenAI initialization failed: ${openaiError instanceof Error ? openaiError.message : 'Unknown error'}`);
+    }
 
     // Build messages for OpenAI Vision
     const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
@@ -177,15 +195,15 @@ Brand Rules:
 - Brand colors: ${BRAND.palette.map(p => `${p.name} ${p.hex}`).join(', ')}
 - Minimum dimensions: ${BRAND.minDimensions.width}x${BRAND.minDimensions.height}px
 - Preferred formats: ${BRAND.preferredFormats.join(', ')}
-          
-          Return a JSON object with this structure:
-          {
-            "sections": [
-              {
-                "key": "logoUsage",
+
+Return a JSON object with this structure:
+{
+  "sections": [
+    {
+      "key": "logoUsage",
       "label": "การใช้โลโก้",
       "score": 85,
-                "items": [
+      "items": [
         {
           "id": "logo-present",
           "label": "มีโลโก้ Waykeeper",
@@ -195,12 +213,12 @@ Brand Rules:
         }
       ],
       "summary": "การใช้โลโก้ดีมาก"
-              }
-            ],
-            "suggestions": {
+    }
+  ],
+  "suggestions": {
     "visualFix": ["ปรับขนาดโลโก้ให้ใหญ่ขึ้น"],
     "formatFix": ["บันทึกเป็น PNG"],
-              "seo": {
+    "seo": {
       "recommendedFileName": "waykeeper-banner.png",
       "altText": "Waykeeper Banner",
       "title": "Waykeeper Brand Banner"
@@ -228,7 +246,7 @@ Brand Rules:
           { 
             type: "image_url", 
             image_url: { url: blob.url, detail: "high" } 
-            } 
+          }
         ] as any,
       },
     ];
@@ -237,70 +255,78 @@ Brand Rules:
     let messages_with_tools = [...messages];
     
     for (let i = 0; i < 4; i++) {
-      const client = getOpenAIClient();
-      const resp = await client.chat.completions.create({
-        model: "gpt-4o",
-        temperature: 0,
-        tools,
-        response_format: { type: "json_object" },
-        messages: messages_with_tools,
-      });
-
-      const msg = resp.choices[0]?.message;
-      if (!msg) throw new Error('No response from OpenAI');
-
-      messages_with_tools.push(msg);
-
-      if (msg.tool_calls?.length) {
-        for (const call of msg.tool_calls) {
-          if (call.type === "function") {
-          const result = await toolRouter(call.function.name, JSON.parse(call.function.arguments || "{}"));
-            messages_with_tools.push({ 
-              role: "tool", 
-              tool_call_id: call.id, 
-              content: JSON.stringify(result) as any 
-            });
-          }
-        }
-        continue;
-      }
-
-      // Parse the final JSON response
-      const content = msg.content;
-      if (typeof content !== 'string') {
-        throw new Error('Invalid response format');
-      }
-
-      let draft;
       try {
-        draft = JSON.parse(content);
-      } catch (e) {
-        throw new Error('Failed to parse JSON response');
+        console.log(`🔄 OpenAI API call attempt ${i + 1}/4...`);
+        const resp = await client.chat.completions.create({
+          model: "gpt-4o",
+          temperature: 0,
+          tools,
+          response_format: { type: "json_object" },
+          messages: messages_with_tools,
+        });
+
+        console.log('✅ OpenAI API response received');
+        const msg = resp.choices[0]?.message;
+        if (!msg) throw new Error('No response from OpenAI');
+
+        messages_with_tools.push(msg);
+
+        if (msg.tool_calls?.length) {
+          for (const call of msg.tool_calls) {
+            if (call.type === "function") {
+              const result = await toolRouter(call.function.name, JSON.parse(call.function.arguments || "{}"));
+              messages_with_tools.push({ 
+                role: "tool", 
+                tool_call_id: call.id, 
+                content: JSON.stringify(result) as any 
+              });
+            }
+          }
+          continue;
+        }
+
+        // Parse the final JSON response
+        const content = msg.content;
+        if (typeof content !== 'string') {
+          throw new Error('Invalid response format');
+        }
+
+        let draft;
+        try {
+          draft = JSON.parse(content);
+        } catch (e) {
+          throw new Error('Failed to parse JSON response');
+        }
+
+        // Calculate overall score
+        const weights = { ...SECTION_WEIGHTS };
+        const totalWeight = Object.values(weights).reduce((a, b) => (a as number) + (b as number), 0);
+        const overall = totalWeight > 0 
+          ? (draft.sections || []).reduce((acc: number, s: any) => acc + (s.score || 0) * ((weights as any)[s.key] || 0), 0) / totalWeight
+          : 0;
+
+        draft.score = { overall: Math.round(overall), weights: weights as any };
+
+        // Add input metadata
+        draft.input = {
+          source: "upload" as const,
+          fileName: file.name,
+          mime: file.type,
+          sizeBytes: file.size,
+          width: clientMetadata?.width || undefined,
+          height: clientMetadata?.height || undefined,
+          dpi: clientMetadata?.dpi || undefined,
+          colorSpace: clientMetadata?.colorSpace || undefined,
+          imageUrl: blob.url
+        };
+
+        console.log('✅ Analysis completed successfully');
+        return NextResponse.json(draft);
+      } catch (apiError) {
+        console.error(`❌ OpenAI API call ${i + 1} failed:`, apiError);
+        if (i === 3) throw apiError; // Re-throw on last attempt
+        continue; // Try again
       }
-
-      // Calculate overall score
-      const weights = { ...SECTION_WEIGHTS };
-      const totalWeight = Object.values(weights).reduce((a, b) => (a as number) + (b as number), 0);
-      const overall = totalWeight > 0 
-        ? (draft.sections || []).reduce((acc: number, s: any) => acc + (s.score || 0) * ((weights as any)[s.key] || 0), 0) / totalWeight
-        : 0;
-
-      draft.score = { overall: Math.round(overall), weights: weights as any };
-
-      // Add input metadata
-      draft.input = {
-        source: "upload" as const,
-        fileName: file.name,
-        mime: file.type,
-        sizeBytes: file.size,
-        width: clientMetadata?.width || undefined,
-        height: clientMetadata?.height || undefined,
-        dpi: clientMetadata?.dpi || undefined,
-        colorSpace: clientMetadata?.colorSpace || undefined,
-        imageUrl: blob.url
-      };
-
-      return NextResponse.json(draft);
     }
 
     throw new Error('Maximum tool call iterations reached');
