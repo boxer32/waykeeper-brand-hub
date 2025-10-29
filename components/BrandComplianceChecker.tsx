@@ -852,7 +852,7 @@ export default function BrandComplianceChecker() {
                 <div className="card">
                     <h3 className="text-lg font-semibold text-deep-earth mb-4">รายละเอียดผลการตรวจสอบ</h3>
                     <div className="space-y-6">
-                      {report.sections.map((section, index) => (
+                      {report.sections.map((section: any, index: number) => (
                         <div key={index} className="border-b border-mist-grey pb-4 last:border-b-0">
                           <div className="flex items-center justify-between mb-3">
                             <h4 className="font-semibold text-deep-earth">{section.label}</h4>
@@ -864,7 +864,7 @@ export default function BrandComplianceChecker() {
                           <p className="text-sm text-deep-earth/70 mb-3">{section.summary}</p>
                           
                           <div className="space-y-2">
-                            {section.items.map((item, itemIndex) => (
+                            {section.items.map((item: any, itemIndex: number) => (
                               <div key={itemIndex} className="flex items-start gap-3 p-3 rounded-lg bg-mist-grey/30">
                                 {getStatusIcon(item.pass)}
                         <div className="flex-1">
