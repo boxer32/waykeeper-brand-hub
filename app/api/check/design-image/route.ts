@@ -475,9 +475,10 @@ export async function POST(req: Request) {
 
       // สรุปคะแนนรวมตามน้ำหนัก
       const weights = { ...SECTION_WEIGHTS } as any;
-      const overall =
-        (draft.sections || []).reduce((acc, s) => acc + (s.score || 0) * (weights[s.key] || 0), 0) /
-        Object.values(weights).reduce((a: any, b: any) => a + b, 0);
+      const totalWeight = Object.values(weights).reduce((a: number, b: number) => a + b, 0);
+      const overall = totalWeight > 0 
+        ? (draft.sections || []).reduce((acc, s) => acc + (s.score || 0) * (weights[s.key] || 0), 0) / totalWeight
+        : 0;
 
       draft.score = { overall: Math.round(overall), weights };
 
