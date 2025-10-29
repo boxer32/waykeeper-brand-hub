@@ -70,20 +70,37 @@ This is an internal corporate brand hub that provides easy access to all Waykeep
    npm install
    ```
 
-2. **Run Development Server**
+2. **Set Environment Variables**
+   Create a `.env.local` file in the root directory:
+   ```bash
+   # OpenAI API Configuration
+   OPENAI_API_KEY=your_openai_api_key_here
+   
+   # Assistant ID for Voice & Tone Playground
+   ASSISTANT_ID=your_assistant_id_here
+   ```
+
+3. **Run Development Server**
    ```bash
    npm run dev
    ```
 
-3. **Build for Production**
+4. **Build for Production**
    ```bash
    npm run build
    ```
 
-4. **Start Production Server**
+5. **Start Production Server**
    ```bash
    npm start
    ```
+
+## Environment Variables
+
+For production deployment, make sure to set these environment variables:
+
+- `OPENAI_API_KEY`: Your OpenAI API key for AI-powered features
+- `ASSISTANT_ID`: OpenAI Assistant ID for Voice & Tone Playground
 
 ## Project Structure
 

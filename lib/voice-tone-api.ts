@@ -1,10 +1,17 @@
 // file: lib/voice-tone-api.ts
 import OpenAI from "openai";
 
-const client = new OpenAI({ 
-  apiKey: process.env.OPENAI_API_KEY
-});
-const ASSISTANT_ID = process.env.ASSISTANT_ID || "asst_BGp8i89phq8ZMilausIkTjlQ";
+// Initialize OpenAI client only when needed
+const getOpenAIClient = () => {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY environment variable is required');
+  }
+  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+};
+
+const getAssistantId = () => {
+  return process.env.ASSISTANT_ID || "asst_BGp8i89phq8ZMilausIkTjlQ";
+};
 
 // mapping ให้สะกดตรงกับ system instruction ของคุณ
 const ScenarioMap: Record<string, string> = {
@@ -80,6 +87,9 @@ export async function runVoiceTone({
   userText: string;
 }) {
   try {
+    const client = getOpenAIClient();
+    const ASSISTANT_ID = getAssistantId();
+    
     // 1) สร้าง thread ใหม่
     const thread = await client.beta.threads.create();
 

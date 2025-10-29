@@ -8,7 +8,13 @@ import type { BrandImageReport } from "@/types/brand-image-report";
 export const runtime = "nodejs";
 export const dynamic = 'force-dynamic';
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Initialize OpenAI client only when needed
+const getOpenAIClient = () => {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY environment variable is required');
+  }
+  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+};
 
 // ---------- Tools (function calling) ----------
 const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
@@ -431,6 +437,7 @@ export async function POST(req: Request) {
 
     // ให้โมเดลเรียก tools สูงสุด 4 รอบ
     for (let i = 0; i < 4; i++) {
+      const client = getOpenAIClient();
       const resp = await client.chat.completions.create({
         model: "gpt-4o",
         temperature: 0,
