@@ -4,6 +4,10 @@ const nextConfig = {
   trailingSlash: true,
   images: {
     unoptimized: true
+  },
+  experimental: {
+    // Disable build traces to avoid stack overflow
+    buildTrace: false
   }
 }
 
