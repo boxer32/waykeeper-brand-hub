@@ -442,8 +442,10 @@ export async function POST(req: Request) {
 
       if (msg.tool_calls?.length) {
         for (const call of msg.tool_calls) {
-          const result = await toolRouter(call.function.name, JSON.parse(call.function.arguments || "{}"));
-          messages.push({ role: "tool", tool_call_id: call.id, content: JSON.stringify(result) as any });
+          if (call.type === "function") {
+            const result = await toolRouter(call.function.name, JSON.parse(call.function.arguments || "{}"));
+            messages.push({ role: "tool", tool_call_id: call.id, content: JSON.stringify(result) as any });
+          }
         }
         continue;
       }
