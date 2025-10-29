@@ -989,7 +989,7 @@ export default function BrandComplianceChecker() {
                 )}
 
                 {/* EXIF Data from API Response */}
-                {report && report.input && report.input.exif && (() => {
+                {report && (report as BrandImageReport).input && (report as BrandImageReport).input.exif && (() => {
                   const exif = (report as BrandImageReport).input.exif!;
                   return (
                     <div className="p-3 bg-morning-gold/10 rounded-lg mt-3">
