@@ -379,7 +379,7 @@ export default function BrandComplianceChecker() {
 
   // คำนวณคะแนนจาก report
   const overallScore = report?.score?.overall || 0
-  const allItems = report?.sections?.flatMap(s => s.items) || []
+  const allItems = report?.sections?.flatMap((s: any) => s.items) || []
   const passedCount = allItems.filter(item => item.pass === true).length
   const failedCount = allItems.filter(item => item.pass === false).length
   const warningCount = allItems.filter(item => item.pass === null).length
