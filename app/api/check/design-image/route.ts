@@ -242,10 +242,13 @@ export async function POST(request: NextRequest) {
     let blob;
     try {
       console.log('📤 Uploading to Vercel Blob...');
+      console.log('🔑 BLOB_READ_WRITE_TOKEN:', process.env.BLOB_READ_WRITE_TOKEN ? 'Present' : 'Missing');
+      console.log('🔑 Blob_READ_WRITE_TOKEN:', process.env.Blob_READ_WRITE_TOKEN ? 'Present' : 'Missing');
+      
       blob = await put(file.name, file, {
         access: 'public',
         addRandomSuffix: true,
-        token: process.env.Blob_READ_WRITE_TOKEN
+        token: process.env.BLOB_READ_WRITE_TOKEN
       });
       console.log('✅ File uploaded to Vercel Blob:', blob.url);
     } catch (blobError) {
