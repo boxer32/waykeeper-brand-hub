@@ -144,10 +144,23 @@ const subBrandLogos = [
     name: 'Waykeeper Explore',
     accentColor: '#FF894F',
     tagline: 'Book in one tap. Fair prices, real experiences.',
+    imagePath: '/logos/master/explore.png',
     example: (
       <div className="text-center p-8 bg-white border-2 border-mist-grey rounded-lg">
-        <div className="text-2xl font-bold text-skypath-blue mb-1">WAYKEEPER</div>
-        <div className="text-lg font-semibold text-journey-coral mb-2">EXPLORE</div>
+        <img 
+          src="/logos/master/explore.png" 
+          alt="Waykeeper Explore Logo" 
+          className="max-h-16 mx-auto mb-2"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+            if (nextElement) {
+              nextElement.style.display = 'block';
+            }
+          }}
+        />
+        <div className="text-2xl font-bold text-skypath-blue mb-1" style={{display: 'none'}}>WAYKEEPER</div>
+        <div className="text-lg font-semibold text-journey-coral mb-2" style={{display: 'none'}}>EXPLORE</div>
         <div className="text-sm font-medium text-deep-earth">
           Book in one tap. Fair prices,<br />
           real experiences.
@@ -159,10 +172,23 @@ const subBrandLogos = [
     name: 'Waykeeper Move',
     accentColor: '#77BEF0',
     tagline: 'One booking. Fair rates. Seamlessly connected journeys.',
+    imagePath: '/logos/master/move.png',
     example: (
       <div className="text-center p-8 bg-white border-2 border-mist-grey rounded-lg">
-        <div className="text-2xl font-bold text-skypath-blue mb-1">WAYKEEPER</div>
-        <div className="text-lg font-semibold text-skypath-blue mb-2">MOVE</div>
+        <img 
+          src="/logos/master/move.png" 
+          alt="Waykeeper Move Logo" 
+          className="max-h-16 mx-auto mb-2"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+            if (nextElement) {
+              nextElement.style.display = 'block';
+            }
+          }}
+        />
+        <div className="text-2xl font-bold text-skypath-blue mb-1" style={{display: 'none'}}>WAYKEEPER</div>
+        <div className="text-lg font-semibold text-skypath-blue mb-2" style={{display: 'none'}}>MOVE</div>
         <div className="text-sm font-medium text-deep-earth">
           One booking. Fair rates.<br />
           Seamlessly connected journeys.
@@ -174,10 +200,23 @@ const subBrandLogos = [
     name: 'Waykeeper Restore',
     accentColor: '#EA5B6F',
     tagline: 'Easy booking. Honest prices. Connected to Thai wisdom.',
+    imagePath: '/logos/master/restore.png',
     example: (
       <div className="text-center p-8 bg-white border-2 border-mist-grey rounded-lg">
-        <div className="text-2xl font-bold text-skypath-blue mb-1">WAYKEEPER</div>
-        <div className="text-lg font-semibold text-heart-rose mb-2">RESTORE</div>
+        <img 
+          src="/logos/master/restore.png" 
+          alt="Waykeeper Restore Logo" 
+          className="max-h-16 mx-auto mb-2"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+            if (nextElement) {
+              nextElement.style.display = 'block';
+            }
+          }}
+        />
+        <div className="text-2xl font-bold text-skypath-blue mb-1" style={{display: 'none'}}>WAYKEEPER</div>
+        <div className="text-lg font-semibold text-heart-rose mb-2" style={{display: 'none'}}>RESTORE</div>
         <div className="text-sm font-medium text-deep-earth">
           Easy booking. Honest prices.<br />
           Connected to Thai wisdom.
@@ -189,10 +228,23 @@ const subBrandLogos = [
     name: 'Waykeeper Circle',
     accentColor: '#8B7AB8',
     tagline: 'Simply rewarding. Fairly generous. Stay connected.',
+    imagePath: '/logos/master/circle.png',
     example: (
       <div className="text-center p-8 bg-white border-2 border-mist-grey rounded-lg">
-        <div className="text-2xl font-bold text-skypath-blue mb-1">WAYKEEPER</div>
-        <div className="text-lg font-semibold text-loop-purple mb-2">CIRCLE</div>
+        <img 
+          src="/logos/master/circle.png" 
+          alt="Waykeeper Circle Logo" 
+          className="max-h-16 mx-auto mb-2"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+            if (nextElement) {
+              nextElement.style.display = 'block';
+            }
+          }}
+        />
+        <div className="text-2xl font-bold text-skypath-blue mb-1" style={{display: 'none'}}>WAYKEEPER</div>
+        <div className="text-lg font-semibold text-loop-purple mb-2" style={{display: 'none'}}>CIRCLE</div>
         <div className="text-sm font-medium text-deep-earth">
           Simply rewarding. Fairly generous.<br />
           Stay connected.
@@ -214,11 +266,12 @@ export default function LogoVariations() {
     setTimeout(() => setCopiedText(null), 2000)
   }
 
-  const downloadAsset = (assetName: string) => {
+  const downloadAsset = (assetName: string, isSubBrand: boolean = false) => {
     try {
       // Create a temporary link element to trigger download
       const link = document.createElement('a')
-      link.href = `/logos/master/${assetName}`
+      const folder = isSubBrand ? 'master' : 'master' // Both are in master folder
+      link.href = `/logos/${folder}/${assetName}`
       link.download = assetName
       link.target = '_blank'
       document.body.appendChild(link)
@@ -333,7 +386,7 @@ export default function LogoVariations() {
                       Copy Name
                     </button>
                     <button
-                      onClick={() => downloadAsset(`${logo.name}.png`)}
+                      onClick={() => downloadAsset(`${logo.name.toLowerCase().replace('waykeeper ', '')}.png`, true)}
                       className="copy-button flex items-center gap-1"
                     >
                       <Download className="w-3 h-3" />
