@@ -19,7 +19,10 @@ const logoVariations = [
           onError={(e) => {
             // Fallback to text if image not found
             e.currentTarget.style.display = 'none';
-            e.currentTarget.nextElementSibling.style.display = 'block';
+            const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+            if (nextElement) {
+              nextElement.style.display = 'block';
+            }
           }}
         />
         <div className="text-3xl font-bold text-skypath-blue mb-2" style={{display: 'none'}}>WAYKEEPER</div>
@@ -43,7 +46,10 @@ const logoVariations = [
           className="max-h-12 mx-auto mb-1"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
-            e.currentTarget.nextElementSibling.style.display = 'block';
+            const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+            if (nextElement) {
+              nextElement.style.display = 'block';
+            }
           }}
         />
         <div className="text-2xl font-bold text-skypath-blue mb-1" style={{display: 'none'}}>WAYKEEPER</div>
@@ -65,7 +71,10 @@ const logoVariations = [
           className="w-16 h-16 mx-auto"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
-            e.currentTarget.nextElementSibling.style.display = 'flex';
+            const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+            if (nextElement) {
+              nextElement.style.display = 'flex';
+            }
           }}
         />
         <div className="w-16 h-16 bg-skypath-blue rounded-lg mx-auto flex items-center justify-center" style={{display: 'none'}}>
@@ -87,7 +96,10 @@ const logoVariations = [
           className="max-h-16 mx-auto mb-2"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
-            e.currentTarget.nextElementSibling.style.display = 'block';
+            const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+            if (nextElement) {
+              nextElement.style.display = 'block';
+            }
           }}
         />
         <div className="text-3xl font-bold text-white mb-2" style={{display: 'none'}}>WAYKEEPER</div>
@@ -111,7 +123,10 @@ const logoVariations = [
           className="max-h-16 mx-auto mb-2"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
-            e.currentTarget.nextElementSibling.style.display = 'block';
+            const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+            if (nextElement) {
+              nextElement.style.display = 'block';
+            }
           }}
         />
         <div className="text-3xl font-bold text-deep-earth mb-2" style={{display: 'none'}}>WAYKEEPER</div>
