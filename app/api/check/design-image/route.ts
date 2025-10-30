@@ -12,7 +12,7 @@ import {
   calculateLayoutBalance,
   SECTION_WEIGHTS,
   BRAND_FAMILIARITY_THRESHOLDS
-} from '../../../lib/scoring';
+} from '../../../../lib/scoring';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
