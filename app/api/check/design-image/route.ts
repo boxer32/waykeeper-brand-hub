@@ -56,7 +56,7 @@ const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
         properties: {
           color1: { type: "string", description: "First hex color (e.g., #77BEF0)" },
           color2: { type: "string", description: "Second hex color (e.g., #FFFFFF)" }
-        },
+      },
         required: ["color1", "color2"]
       }
     }
@@ -70,7 +70,7 @@ const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
         type: "object",
         properties: {
           hex: { type: "string", description: "Hex color to match (e.g., #77BEF0)" }
-        },
+      },
         required: ["hex"]
       }
     }
@@ -119,7 +119,7 @@ const toolRouter = async (name: string, args: any) => {
         distance: Math.abs(parseInt(targetHex, 16) - parseInt(p.hex.replace('#', ''), 16))
       }));
       const nearest = brandColors.reduce((a, b) => a.distance < b.distance ? a : b);
-      return { 
+    return {
         nearest: nearest.name, 
         hex: nearest.hex,
         distance: nearest.distance
@@ -164,8 +164,11 @@ export async function POST(request: NextRequest) {
     let blob;
     try {
       console.log('📤 Uploading to Vercel Blob...');
+      console.log('🔑 Using token:', process.env.Blob_READ_WRITE_TOKEN ? 'Present' : 'Missing');
+      
       blob = await put(file.name, file, {
-        access: 'public'
+        access: 'public',
+        token: process.env.Blob_READ_WRITE_TOKEN
       });
       console.log('✅ File uploaded to Vercel Blob:', blob.url);
     } catch (blobError) {
@@ -195,15 +198,15 @@ Brand Rules:
 - Brand colors: ${BRAND.palette.map(p => `${p.name} ${p.hex}`).join(', ')}
 - Minimum dimensions: ${BRAND.minDimensions.width}x${BRAND.minDimensions.height}px
 - Preferred formats: ${BRAND.preferredFormats.join(', ')}
-
-Return a JSON object with this structure:
-{
-  "sections": [
-    {
-      "key": "logoUsage",
+          
+          Return a JSON object with this structure:
+          {
+            "sections": [
+              {
+                "key": "logoUsage",
       "label": "การใช้โลโก้",
       "score": 85,
-      "items": [
+                "items": [
         {
           "id": "logo-present",
           "label": "มีโลโก้ Waykeeper",
@@ -213,12 +216,12 @@ Return a JSON object with this structure:
         }
       ],
       "summary": "การใช้โลโก้ดีมาก"
-    }
-  ],
-  "suggestions": {
+              }
+            ],
+            "suggestions": {
     "visualFix": ["ปรับขนาดโลโก้ให้ใหญ่ขึ้น"],
     "formatFix": ["บันทึกเป็น PNG"],
-    "seo": {
+              "seo": {
       "recommendedFileName": "waykeeper-banner.png",
       "altText": "Waykeeper Banner",
       "title": "Waykeeper Brand Banner"
@@ -246,7 +249,7 @@ Return a JSON object with this structure:
           { 
             type: "image_url", 
             image_url: { url: blob.url, detail: "high" } 
-          }
+            } 
         ] as any,
       },
     ];
@@ -257,11 +260,11 @@ Return a JSON object with this structure:
     for (let i = 0; i < 4; i++) {
       try {
         console.log(`🔄 OpenAI API call attempt ${i + 1}/4...`);
-        const resp = await client.chat.completions.create({
-          model: "gpt-4o",
-          temperature: 0,
-          tools,
-          response_format: { type: "json_object" },
+      const resp = await client.chat.completions.create({
+        model: "gpt-4o",
+        temperature: 0,
+        tools,
+        response_format: { type: "json_object" },
           messages: messages_with_tools,
         });
 
@@ -271,19 +274,19 @@ Return a JSON object with this structure:
 
         messages_with_tools.push(msg);
 
-        if (msg.tool_calls?.length) {
-          for (const call of msg.tool_calls) {
+      if (msg.tool_calls?.length) {
+        for (const call of msg.tool_calls) {
             if (call.type === "function") {
-              const result = await toolRouter(call.function.name, JSON.parse(call.function.arguments || "{}"));
+          const result = await toolRouter(call.function.name, JSON.parse(call.function.arguments || "{}"));
               messages_with_tools.push({ 
                 role: "tool", 
                 tool_call_id: call.id, 
                 content: JSON.stringify(result) as any 
               });
             }
-          }
-          continue;
         }
+        continue;
+      }
 
         // Parse the final JSON response
         const content = msg.content;
@@ -308,7 +311,7 @@ Return a JSON object with this structure:
         draft.score = { overall: Math.round(overall), weights: weights as any };
 
         // Add input metadata
-        draft.input = {
+      draft.input = {
           source: "upload" as const,
           fileName: file.name,
           mime: file.type,
