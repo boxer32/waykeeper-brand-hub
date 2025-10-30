@@ -196,14 +196,20 @@ export default function BrandComplianceChecker() {
         }))
       }
       
-      console.log('🚀 Sending request to API...', { metadata: imageMetadata })
+      console.log('🚀 Sending request to API...', { 
+        metadata: imageMetadata,
+        url: `${window.location.origin}/api/check/design-image/`,
+        fileSize: uploadedFile.size,
+        fileName: uploadedFile.name
+      })
       
-      const response = await fetch('/api/check/design-image/', {
+      const response = await fetch(`${window.location.origin}/api/check/design-image/`, {
         method: 'POST',
         body: formData,
       })
       
       console.log('📡 Response status:', response.status)
+      console.log('📡 Response headers:', Object.fromEntries(response.headers.entries()))
       
       if (!response.ok) {
         const errorText = await response.text()
