@@ -15,7 +15,7 @@ const logoVariations = [
         <img 
           src="/logos/master/primary-logo.png" 
           alt="Primary Logo" 
-          className="max-h-16 mx-auto"
+          className="max-h-24 mx-auto"
           onError={(e) => {
             // Fallback to text if image not found
             e.currentTarget.style.display = 'none';
@@ -43,7 +43,7 @@ const logoVariations = [
         <img 
           src="/logos/master/compact-logo.png" 
           alt="Compact Logo" 
-          className="max-h-12 mx-auto"
+          className="max-h-20 mx-auto"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
             const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
@@ -68,7 +68,7 @@ const logoVariations = [
         <img 
           src="/logos/master/icon-only.png" 
           alt="Icon Only" 
-          className="w-16 h-16 mx-auto"
+          className="w-20 h-20 mx-auto"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
             const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
@@ -93,7 +93,7 @@ const logoVariations = [
         <img 
           src="/logos/master/monochrome-white.png" 
           alt="Monochrome White Logo" 
-          className="max-h-16 mx-auto"
+          className="max-h-24 mx-auto"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
             const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
@@ -120,7 +120,7 @@ const logoVariations = [
         <img 
           src="/logos/master/monochrome-black.png" 
           alt="Monochrome Black Logo" 
-          className="max-h-16 mx-auto"
+          className="max-h-24 mx-auto"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
             const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
@@ -150,7 +150,7 @@ const subBrandLogos = [
         <img 
           src="/logos/master/explore.png" 
           alt="Waykeeper Explore Logo" 
-          className="max-h-16 mx-auto mb-2"
+          className="max-h-24 mx-auto mb-2"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
             const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
@@ -178,7 +178,7 @@ const subBrandLogos = [
         <img 
           src="/logos/master/move.png" 
           alt="Waykeeper Move Logo" 
-          className="max-h-16 mx-auto mb-2"
+          className="max-h-24 mx-auto mb-2"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
             const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
@@ -206,7 +206,7 @@ const subBrandLogos = [
         <img 
           src="/logos/master/restore.png" 
           alt="Waykeeper Restore Logo" 
-          className="max-h-16 mx-auto mb-2"
+          className="max-h-24 mx-auto mb-2"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
             const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
@@ -234,7 +234,7 @@ const subBrandLogos = [
         <img 
           src="/logos/master/circle.png" 
           alt="Waykeeper Circle Logo" 
-          className="max-h-16 mx-auto mb-2"
+          className="max-h-24 mx-auto mb-2"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
             const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
