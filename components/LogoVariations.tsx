@@ -15,7 +15,7 @@ const logoVariations = [
         <img 
           src="/logos/master/primary-logo.png" 
           alt="Primary Logo" 
-          className="max-h-16 mx-auto mb-2"
+          className="max-h-16 mx-auto"
           onError={(e) => {
             // Fallback to text if image not found
             e.currentTarget.style.display = 'none';
@@ -26,7 +26,7 @@ const logoVariations = [
           }}
         />
         <div className="text-3xl font-bold text-skypath-blue mb-2" style={{display: 'none'}}>WAYKEEPER</div>
-        <div className="text-sm font-medium text-deep-earth">
+        <div className="text-sm font-medium text-deep-earth" style={{display: 'none'}}>
           Simply. Fairly.<br />
           Connected.
         </div>
@@ -43,7 +43,7 @@ const logoVariations = [
         <img 
           src="/logos/master/compact-logo.png" 
           alt="Compact Logo" 
-          className="max-h-12 mx-auto mb-1"
+          className="max-h-12 mx-auto"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
             const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
@@ -53,8 +53,8 @@ const logoVariations = [
           }}
         />
         <div className="text-2xl font-bold text-skypath-blue mb-1" style={{display: 'none'}}>WAYKEEPER</div>
-        <div className="text-xs font-medium text-deep-earth">SFC</div>
-        <div className="text-xs text-deep-earth/60">(Simply. Fairly. Connected.)</div>
+        <div className="text-xs font-medium text-deep-earth" style={{display: 'none'}}>SFC</div>
+        <div className="text-xs text-deep-earth/60" style={{display: 'none'}}>(Simply. Fairly. Connected.)</div>
       </div>
     )
   },
@@ -93,7 +93,7 @@ const logoVariations = [
         <img 
           src="/logos/master/monochrome-white.png" 
           alt="Monochrome White Logo" 
-          className="max-h-16 mx-auto mb-2"
+          className="max-h-16 mx-auto"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
             const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
@@ -103,7 +103,7 @@ const logoVariations = [
           }}
         />
         <div className="text-3xl font-bold text-white mb-2" style={{display: 'none'}}>WAYKEEPER</div>
-        <div className="text-sm font-medium text-white/80">
+        <div className="text-sm font-medium text-white/80" style={{display: 'none'}}>
           Simply. Fairly.<br />
           Connected.
         </div>
@@ -120,7 +120,7 @@ const logoVariations = [
         <img 
           src="/logos/master/monochrome-black.png" 
           alt="Monochrome Black Logo" 
-          className="max-h-16 mx-auto mb-2"
+          className="max-h-16 mx-auto"
           onError={(e) => {
             e.currentTarget.style.display = 'none';
             const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
@@ -130,7 +130,7 @@ const logoVariations = [
           }}
         />
         <div className="text-3xl font-bold text-deep-earth mb-2" style={{display: 'none'}}>WAYKEEPER</div>
-        <div className="text-sm font-medium text-deep-earth/80">
+        <div className="text-sm font-medium text-deep-earth/80" style={{display: 'none'}}>
           Simply. Fairly.<br />
           Connected.
         </div>
@@ -215,8 +215,20 @@ export default function LogoVariations() {
   }
 
   const downloadAsset = (assetName: string) => {
-    showToast(`Downloading ${assetName}...`)
-    // In a real implementation, this would trigger actual file downloads
+    try {
+      // Create a temporary link element to trigger download
+      const link = document.createElement('a')
+      link.href = `/logos/master/${assetName}`
+      link.download = assetName
+      link.target = '_blank'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      showToast(`ดาวน์โหลด ${assetName} เรียบร้อยแล้ว!`)
+    } catch (error) {
+      console.error('Download failed:', error)
+      showToast(`ไม่สามารถดาวน์โหลด ${assetName} ได้`)
+    }
   }
 
   return (
