@@ -9,9 +9,20 @@ const logoVariations = [
     name: 'Primary Logo',
     description: 'Main logo with full tagline',
     usage: 'Website headers, business cards, presentations',
+    imagePath: '/logos/master/primary-logo.png',
     example: (
       <div className="text-center p-8 bg-white border-2 border-mist-grey rounded-lg">
-        <div className="text-3xl font-bold text-skypath-blue mb-2">WAYKEEPER</div>
+        <img 
+          src="/logos/master/primary-logo.png" 
+          alt="Primary Logo" 
+          className="max-h-16 mx-auto mb-2"
+          onError={(e) => {
+            // Fallback to text if image not found
+            e.currentTarget.style.display = 'none';
+            e.currentTarget.nextElementSibling.style.display = 'block';
+          }}
+        />
+        <div className="text-3xl font-bold text-skypath-blue mb-2" style={{display: 'none'}}>WAYKEEPER</div>
         <div className="text-sm font-medium text-deep-earth">
           Simply. Fairly.<br />
           Connected.
@@ -23,9 +34,19 @@ const logoVariations = [
     name: 'Compact Logo',
     description: 'Logo with abbreviated tagline',
     usage: 'Mobile apps, small spaces, social media',
+    imagePath: '/logos/master/compact-logo.png',
     example: (
       <div className="text-center p-8 bg-white border-2 border-mist-grey rounded-lg">
-        <div className="text-2xl font-bold text-skypath-blue mb-1">WAYKEEPER</div>
+        <img 
+          src="/logos/master/compact-logo.png" 
+          alt="Compact Logo" 
+          className="max-h-12 mx-auto mb-1"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            e.currentTarget.nextElementSibling.style.display = 'block';
+          }}
+        />
+        <div className="text-2xl font-bold text-skypath-blue mb-1" style={{display: 'none'}}>WAYKEEPER</div>
         <div className="text-xs font-medium text-deep-earth">SFC</div>
         <div className="text-xs text-deep-earth/60">(Simply. Fairly. Connected.)</div>
       </div>
@@ -35,9 +56,19 @@ const logoVariations = [
     name: 'Icon Only',
     description: 'Minimal icon version',
     usage: 'Favicons, app icons, very small spaces',
+    imagePath: '/logos/master/icon-only.png',
     example: (
       <div className="text-center p-8 bg-white border-2 border-mist-grey rounded-lg">
-        <div className="w-16 h-16 bg-skypath-blue rounded-lg mx-auto flex items-center justify-center">
+        <img 
+          src="/logos/master/icon-only.png" 
+          alt="Icon Only" 
+          className="w-16 h-16 mx-auto"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            e.currentTarget.nextElementSibling.style.display = 'flex';
+          }}
+        />
+        <div className="w-16 h-16 bg-skypath-blue rounded-lg mx-auto flex items-center justify-center" style={{display: 'none'}}>
           <div className="text-white font-bold text-xl">W</div>
         </div>
       </div>
@@ -47,9 +78,19 @@ const logoVariations = [
     name: 'Monochrome White',
     description: 'White version for dark backgrounds',
     usage: 'Dark themes, overlays, dark backgrounds',
+    imagePath: '/logos/master/monochrome-white.png',
     example: (
       <div className="text-center p-8 bg-deep-earth border-2 border-mist-grey rounded-lg">
-        <div className="text-3xl font-bold text-white mb-2">WAYKEEPER</div>
+        <img 
+          src="/logos/master/monochrome-white.png" 
+          alt="Monochrome White Logo" 
+          className="max-h-16 mx-auto mb-2"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            e.currentTarget.nextElementSibling.style.display = 'block';
+          }}
+        />
+        <div className="text-3xl font-bold text-white mb-2" style={{display: 'none'}}>WAYKEEPER</div>
         <div className="text-sm font-medium text-white/80">
           Simply. Fairly.<br />
           Connected.
@@ -61,9 +102,19 @@ const logoVariations = [
     name: 'Monochrome Black',
     description: 'Black version for light backgrounds',
     usage: 'Print materials, single-color applications',
+    imagePath: '/logos/master/monochrome-black.png',
     example: (
       <div className="text-center p-8 bg-white border-2 border-mist-grey rounded-lg">
-        <div className="text-3xl font-bold text-deep-earth mb-2">WAYKEEPER</div>
+        <img 
+          src="/logos/master/monochrome-black.png" 
+          alt="Monochrome Black Logo" 
+          className="max-h-16 mx-auto mb-2"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            e.currentTarget.nextElementSibling.style.display = 'block';
+          }}
+        />
+        <div className="text-3xl font-bold text-deep-earth mb-2" style={{display: 'none'}}>WAYKEEPER</div>
         <div className="text-sm font-medium text-deep-earth/80">
           Simply. Fairly.<br />
           Connected.
