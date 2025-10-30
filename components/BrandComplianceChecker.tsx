@@ -254,10 +254,11 @@ export default function BrandComplianceChecker() {
     if (files.length > 0) {
       const file = files[0]
       if (file.type.startsWith('image/')) {
-        const event = {
+        // Create a mock event for file upload
+        const mockEvent = {
           target: { files: [file] }
-        } as React.ChangeEvent<HTMLInputElement>
-        handleFileUpload(event)
+        } as any
+        handleFileUpload(mockEvent)
       } else {
         showToast('กรุณาอัปโหลดไฟล์รูปภาพเท่านั้น')
       }
